@@ -11,13 +11,25 @@ fn create_directories(project_name: &String) -> String {
         .unwrap();
 
     let project_path = current_directory + "/" + project_name;
-    create_dir(&project_path);
+    match create_dir(&project_path) {
+        Err(x) => println!("Error creating project directory: {x}"),
+        Ok(_) => (),
+    }
     let binaries_dir = project_path.clone() + "/bin";
-    create_dir(binaries_dir);
+    match create_dir(binaries_dir) {
+        Err(x) => println!("Error creating project directory: {x}"),
+        Ok(_) => (),
+    }
     let objects_dir = project_path.clone() + "/obj";
-    create_dir(objects_dir);
+    match create_dir(objects_dir) {
+        Err(x) => println!("Error creating project directory: {x}"),
+        Ok(_) => (),
+    }
     let sources_dir = project_path.clone() + "/src";
-    create_dir(sources_dir);
+    match create_dir(sources_dir) {
+        Err(x) => println!("Error creating project directory: {x}"),
+        Ok(_) => (),
+    }
 
     project_path
 }
@@ -62,7 +74,10 @@ clean:\n\
     \trm -rf $(OBJDIR)/*\n\
     \trm $(BINDIR)/{project_name}"
     );
-    fs::write(makefile_path, makefile_contents);
+    match fs::write(makefile_path, makefile_contents) {
+        Err(x) => println!("Error creating Makefile: {x}"),
+        Ok(_) => (),
+    }
 
     let main_path = project_path + format!("/src/main.{language}").as_str();
 
@@ -86,7 +101,10 @@ int main() {
 }";
     }
 
-    fs::write(main_path, main_content);
+    match fs::write(main_path, main_content) {
+        Err(x) => println!("Error creating main file: {x}"),
+        Ok(_) => (),
+    }
 }
 
 fn is_valid_language(language: &String) -> bool {
