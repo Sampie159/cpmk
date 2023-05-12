@@ -26,4 +26,16 @@ c-project/
 └───Makefile
 ```
 
+# Install
+### Requires Cargo/Rust
+Simply run
+```sh
+cargo install cpmk
+```
+
+# Uninstall
+Simply run
+```sh
+cargo uninstall cpmk
+```
 # Built in Rust btw
