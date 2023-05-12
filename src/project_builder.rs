@@ -1,6 +1,6 @@
 use std::{
     env::current_dir,
-    fs::{self, create_dir},
+    fs::{create_dir, write},
 };
 
 fn create_directories(project_name: &String) -> String {
@@ -15,16 +15,19 @@ fn create_directories(project_name: &String) -> String {
         Err(x) => println!("Error creating project directory: {x}"),
         Ok(_) => (),
     }
+
     let binaries_dir = project_path.clone() + "/bin";
     match create_dir(binaries_dir) {
         Err(x) => println!("Error creating project directory: {x}"),
         Ok(_) => (),
     }
+
     let objects_dir = project_path.clone() + "/obj";
     match create_dir(objects_dir) {
         Err(x) => println!("Error creating project directory: {x}"),
         Ok(_) => (),
     }
+
     let sources_dir = project_path.clone() + "/src";
     match create_dir(sources_dir) {
         Err(x) => println!("Error creating project directory: {x}"),
@@ -74,7 +77,7 @@ clean:\n\
     \trm -rf $(OBJDIR)/*\n\
     \trm $(BINDIR)/{project_name}"
     );
-    match fs::write(makefile_path, makefile_contents) {
+    match write(makefile_path, makefile_contents) {
         Err(x) => println!("Error creating Makefile: {x}"),
         Ok(_) => (),
     }
@@ -101,7 +104,7 @@ int main() {
 }";
     }
 
-    match fs::write(main_path, main_content) {
+    match write(main_path, main_content) {
         Err(x) => println!("Error creating main file: {x}"),
         Ok(_) => (),
     }
