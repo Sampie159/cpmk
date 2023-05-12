@@ -18,4 +18,3 @@ categories = ["command-line-utilities"]
 [[bin]]
 name = "cpmk"
 path = "src/main.rs"
-crate-type = ["bin"]
