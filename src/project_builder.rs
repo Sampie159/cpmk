@@ -3,6 +3,7 @@ use std::{
     fs::{create_dir, write},
 };
 
+/// Generate the directories for the project.
 fn create_directories(project_name: &String) -> String {
     let current_directory = current_dir()
         .unwrap()
@@ -37,6 +38,7 @@ fn create_directories(project_name: &String) -> String {
     project_path
 }
 
+/// Generate the files for the given language.
 fn setup_files(language: &String, project_name: &String, project_path: String) {
     let compiler;
 
@@ -110,11 +112,13 @@ int main() {
     }
 }
 
+/// Checks if the given language is valid.
 fn is_valid_language(language: &String) -> bool {
     let languages = [String::from("c"), String::from("cc"), String::from("cpp")];
     languages.contains(&language)
 }
 
+/// Creates a new project with the given name and language.
 pub fn setup_project(args: Vec<String>) {
     let language = &args[1];
     let project_name = &args[2];
