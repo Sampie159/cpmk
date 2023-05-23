@@ -40,13 +40,10 @@ fn create_directories(project_name: &String) -> String {
 
 /// Generate the files for the given language.
 fn setup_files(language: &String, project_name: &String, project_path: String) {
-    let compiler;
-
-    if language.eq("c") {
-        compiler = "gcc";
-    } else {
-        compiler = "g++";
-    }
+    let compiler = match language.as_str() {
+        "c" => "gcc",
+        _ => "g++",
+    };
 
     let makefile_path = project_path.clone() + "/Makefile";
     let makefile_contents = format!(
@@ -86,25 +83,26 @@ clean:\n\
 
     let main_path = project_path + format!("/src/main.{language}").as_str();
 
-    let main_content;
-
-    if language.eq("c") {
-        main_content = "#include <stdio.h>
+    let main_content = match language.as_str() {
+        "c" => {
+            "#include <stdio.h>
 
 int main() {
     printf(\"Hello World!\\n\");
 
     return 0;
-}";
-    } else {
-        main_content = "#include <iostream>
+}"
+        }
+        _ => {
+            "#include <iostream>
 
 int main() {
     std::cout << \"Hello World!\\n\";
 
     return 0;
-}";
-    }
+}"
+        }
+    };
 
     match write(main_path, main_content) {
         Err(x) => println!("Error creating main file: {x}"),
