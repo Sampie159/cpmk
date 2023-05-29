@@ -4,7 +4,7 @@ use std::{
 };
 
 /// Generate the directories for the project.
-fn create_directories(project_name: &String) -> String {
+fn create_directories(project_name: &str) -> String {
     let current_directory = current_dir()
         .unwrap()
         .into_os_string()
@@ -39,13 +39,13 @@ fn create_directories(project_name: &String) -> String {
 }
 
 /// Generate the files for the given language.
-fn setup_files(language: &String, project_name: &String, project_path: String) {
-    let compiler = match language.as_str() {
+fn setup_files(language: &str, project_name: &str, project_path: String) {
+    let compiler = match language {
         "c" => "gcc",
         _ => "g++",
     };
 
-    let makefile_path = project_path.clone() + "/Makefile";
+    let makefile_path = project_path.to_owned() + "/Makefile";
     let makefile_contents = format!(
         "CFLAGS=-Wall -Wextra -g\n\
 CC={compiler}\n\
@@ -81,9 +81,9 @@ clean:\n\
         Ok(_) => (),
     }
 
-    let main_path = project_path + format!("/src/main.{language}").as_str();
+    let main_path = project_path.to_owned() + format!("/src/main.{language}").as_str();
 
-    let main_content = match language.as_str() {
+    let main_content = match language {
         "c" => {
             "#include <stdio.h>
 
@@ -111,13 +111,13 @@ int main() {
 }
 
 /// Checks if the given language is valid.
-fn is_valid_language(language: &String) -> bool {
-    let languages = [String::from("c"), String::from("cc"), String::from("cpp")];
+fn is_valid_language(language: &str) -> bool {
+    let languages = ["c", "cc", "cpp"];
     languages.contains(&language)
 }
 
 /// Creates a new project with the given name and language.
-pub fn setup_project(args: Vec<String>) {
+pub fn setup_project(args: Vec<&str>) {
     let language = &args[1];
     let project_name = &args[2];
 
