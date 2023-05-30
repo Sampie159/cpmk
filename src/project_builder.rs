@@ -3,47 +3,37 @@ use std::{
     fs::{create_dir, write},
 };
 
+/// Helper function to create a directory.
+fn create_directory(directory: &str) {
+    create_dir(directory).expect("Error creating project directory");
+}
+
 /// Generate the directories for the project.
 fn create_directories(project_name: &str) -> String {
     let current_directory = current_dir()
-        .unwrap()
+        .expect("Current directory should exist")
         .into_os_string()
         .into_string()
-        .unwrap();
+        .expect("Current directory path should be a string");
 
     let project_path = current_directory + "/" + project_name;
-    match create_dir(&project_path) {
-        Err(x) => println!("Error creating project directory: {x}"),
-        Ok(_) => (),
-    }
+    create_directory(&project_path);
 
     let binaries_dir = project_path.clone() + "/bin";
-    match create_dir(binaries_dir) {
-        Err(x) => println!("Error creating project directory: {x}"),
-        Ok(_) => (),
-    }
+    create_directory(&binaries_dir);
 
     let objects_dir = project_path.clone() + "/obj";
-    match create_dir(objects_dir) {
-        Err(x) => println!("Error creating project directory: {x}"),
-        Ok(_) => (),
-    }
+    create_directory(&objects_dir);
 
     let sources_dir = project_path.clone() + "/src";
-    match create_dir(sources_dir) {
-        Err(x) => println!("Error creating project directory: {x}"),
-        Ok(_) => (),
-    }
+    create_directory(&sources_dir);
 
     project_path
 }
 
 /// Generate the files for the given language.
 fn setup_files(language: &str, project_name: &str, project_path: String) {
-    let compiler = match language {
-        "c" => "gcc",
-        _ => "g++",
-    };
+    let compiler = if let "c" = language { "gcc" } else { "g++" };
 
     let makefile_path = project_path.to_owned() + "/Makefile";
     let makefile_contents = format!(
@@ -76,37 +66,39 @@ clean:\n\
     \trm -rf $(OBJDIR)/*\n\
     \trm $(BINDIR)/{project_name}"
     );
-    match write(makefile_path, makefile_contents) {
-        Err(x) => println!("Error creating Makefile: {x}"),
-        Ok(_) => (),
+    if let Err(x) = write(makefile_path, makefile_contents) {
+        println!("Error creating Makefile: {x}")
     }
 
-    let main_path = project_path.to_owned() + format!("/src/main.{language}").as_str();
+    let main_path = project_path.clone() + format!("/src/main.{language}").as_str();
 
-    let main_content = match language {
-        "c" => {
-            "#include <stdio.h>
+    let main_content = if let "c" = language {
+        "#include <stdio.h>
 
 int main() {
     printf(\"Hello World!\\n\");
 
     return 0;
 }"
-        }
-        _ => {
-            "#include <iostream>
+    } else {
+        "#include <iostream>
 
 int main() {
     std::cout << \"Hello World!\\n\";
 
     return 0;
 }"
-        }
     };
 
-    match write(main_path, main_content) {
-        Err(x) => println!("Error creating main file: {x}"),
-        Ok(_) => (),
+    if let Err(x) = write(main_path, main_content) {
+        println!("Error creating main file: {x}")
+    }
+
+    let gitignore_path = project_path + "/.gitignore";
+    let gitignore_content = "bin/\nobj/";
+
+    if let Err(x) = write(gitignore_path, gitignore_content) {
+        println!("Error creating .gitignore file: {x}")
     }
 }
 
@@ -121,9 +113,9 @@ pub fn setup_project(args: Vec<&str>) {
     let language = &args[1];
     let project_name = &args[2];
 
-    if is_valid_language(&language) {
-        let project_path = create_directories(&project_name);
-        setup_files(language, &project_name, project_path);
+    if is_valid_language(language) {
+        let project_path = create_directories(project_name);
+        setup_files(language, project_name, project_path);
         println!("Project {project_name} initiated succesfully!");
     } else {
         println!("Language not supported, use \"c\", \"cc\" or \"cpp\"");
