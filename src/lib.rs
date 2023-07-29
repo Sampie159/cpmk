@@ -3,20 +3,22 @@ use std::{
     fs::{create_dir, write},
 };
 
+use clap::Parser;
+
 /// Struct that holds the projects information.
+#[derive(Parser, Debug)]
+#[command(name = "CPMK", version, about, author)]
 pub struct Cpmk {
+    /// The language of the new project
+    #[clap(short, long)]
     language: String,
+
+    /// The name of the new project
+    #[clap(short, long)]
     project_name: String,
 }
 
 impl Cpmk {
-    pub fn new(language: &str, project_name: &str) -> Cpmk {
-        Cpmk {
-            language: language.to_string(),
-            project_name: project_name.to_string(),
-        }
-    }
-
     /// Setup the project
     pub fn setup_project(&self) {
         if !self.has_valid_language() {
@@ -39,8 +41,8 @@ impl Cpmk {
 
     /// Checks if the given language is valid.
     fn has_valid_language(&self) -> bool {
-        let languages = ["c", "cc", "cpp"];
-        languages.contains(&self.language.as_str())
+        const LANGUAGES: [&str; 3] = ["c", "cc", "cpp"];
+        LANGUAGES.contains(&self.language.as_str())
     }
 
     /// Create the directories for the project

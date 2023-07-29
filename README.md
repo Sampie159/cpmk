@@ -1,19 +1,20 @@
 # Sam's C/C++ Project MaKer
 ## Generate a simple C/C++ project with a CMake configuration.
-### Usage: cpmk \<language\> \<project-name\>
+### Usage: cpmk -l \<LANGUAGE\> -p \<PROJECT_NAME\>
+### Variant: cpmk --language \<LANGUAGE\> --project_name \<PROJECT_NAME\>
 
 #### Example C:
 ```sh
-cpmk c c-project
+cpmk -l c -p c-project
 ```
 
 #### Example C++:
 ```sh
-cpmk cpp cpp-project
+cpmk -l cpp -p cpp-project
 ```
 or
 ```sh
-cpmk cc cpp-project
+cpmk -l cc -p cpp-project
 ```
 
 # Install
