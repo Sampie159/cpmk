@@ -1,14 +1,11 @@
-use project_builder::setup_project;
-
-mod project_builder;
+use cpmk::Cpmk;
 
 fn main() {
-    let args = std::env::args().collect::<Vec<_>>();
-    let args: Vec<&str> = args.iter().map(|s| s.as_str()).collect();
+    let args = std::env::args().collect::<Vec<String>>();
+    let language = &args[1];
+    let project_name = &args[2];
 
-    if args.len() != 3 {
-        println!("Incorrect usage, please run something like:\ncpmk <language> <project-name>");
-    } else {
-        setup_project(args);
-    }
+    let cpmk = Cpmk::new(language, project_name);
+
+    cpmk.setup_project();
 }

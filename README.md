@@ -1,5 +1,5 @@
 # Sam's C/C++ Project MaKer
-## Generate a barebones C/C++ project structure including a basic Makefile
+## Generate a simple C/C++ project with a CMake configuration.
 ### Usage: cpmk \<language\> \<project-name\>
 
 #### Example C:
@@ -14,16 +14,6 @@ cpmk cpp cpp-project
 or
 ```sh
 cpmk cc cpp-project
-```
-
-### Output
-```
-c-project/
-|
-└───bin/
-└───obj/
-└───src/
-└───Makefile
 ```
 
 # Install
