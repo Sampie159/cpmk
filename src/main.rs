@@ -1,8 +1,5 @@
-use clap::Parser;
-use cpmk::Cpmk;
+use cpmk::setup_project;
 
 fn main() {
-    let cpmk = Cpmk::parse();
-
-    cpmk.setup_project();
+    setup_project();
 }
