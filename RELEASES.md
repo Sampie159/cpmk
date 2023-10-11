@@ -1,3 +1,4 @@
-# Version 2.1.3
+# Version 2.1.4
 
-* Simple refactoring of the code base
+* Set CMAKE_EXPORT_COMPILE_COMMANDS to ON.
+* Some small refactoring.

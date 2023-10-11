@@ -59,30 +59,29 @@ fn create_files(cpmk: &Cpmk, project_path: &str) {
     let cmake_file = project_path.to_owned() + "/CMakeLists.txt";
     let cmake_src_file = project_path.to_owned() + "/src/CMakeLists.txt";
 
-    let main_file_content = if &cpmk.language == "c" {
-        "#include <stdio.h>
+    let main_file_content: &str;
+    let cmake_extra: &str;
+    if &cpmk.language == "c" {
+        main_file_content = "#include <stdio.h>
 
 int main(void) {
   printf(\"Hello World!\\n\");
 
   return 0;
-}"
+}";
+
+        cmake_extra = "set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD_REQUIRED True)
+set(CMAKE_C_FLAGS \"${CMAKE_C_FLAGS} -Wall -Wextra -Wpedantic\")\n\n"
     } else {
-        "#include <iostream>
+        main_file_content = "#include <iostream>
 
 int main(void) {
   std::cout << \"Hello World!\\n\";
 
   return 0;
-}"
-    };
-
-    let cmake_extra = if &cpmk.language == "c" {
-        "set(CMAKE_C_STANDARD 17)
-set(CMAKE_C_STANDARD_REQUIRED True)
-set(CMAKE_C_FLAGS \"${CMAKE_C_FLAGS} -Wall -Wextra -Wpedantic\")\n\n"
-    } else {
-        ""
+}";
+        cmake_extra = "";
     };
 
     let cmake_file_content = format!(
@@ -95,6 +94,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_CXX_FLAGS \"${{CMAKE_CXX_FLAGS}} -Wall -Wextra -Wpedantic\")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${{CMAKE_BINARY_DIR}})
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_subdirectory(src)\n",
         cpmk.project_name, cmake_extra

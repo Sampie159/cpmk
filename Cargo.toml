@@ -1,6 +1,6 @@
 [package]
 name = "cpmk"
-version = "2.1.3"
+version = "2.1.4"
 edition = "2021"
 authors = ["Sampie"]
 description = "A simple C/C++ CLI Project Maker including CMake"
